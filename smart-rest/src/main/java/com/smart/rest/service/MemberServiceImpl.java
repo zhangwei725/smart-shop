@@ -42,13 +42,13 @@ public class MemberServiceImpl implements MemberService {
                     vo = new MemberVo();
                     BeanUtils.copyProperties(vo, member);
                 } else {
-                    throw new ServiceException(RespCode.ERROR_MEMBER_PASSWORD);
+                    throw new ServiceException(RespCode.BUSINESS_UNKNOW_ERROR);
                 }
             } else {
-                throw new ServiceException(RespCode.ERROR_MEMBER_PASSWORD);
+                throw new ServiceException(RespCode.BUSINESS_UNKNOW_ERROR);
             }
         } else {
-            throw new ServiceException(RespCode.ERROR_MEMBER_PASSWORD);
+            throw new ServiceException(RespCode.BUSINESS_UNKNOW_ERROR);
         }
         return vo;
     }

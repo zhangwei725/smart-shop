@@ -2,3 +2,6 @@
 
 # Project exclude paths
 /smart-rest/target/
+*.iml
+.idea
+

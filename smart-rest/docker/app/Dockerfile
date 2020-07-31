@@ -6,5 +6,4 @@ ENV JAVA_HOME /opt/jdk1.8.0_221/
 ENV  CLASSPATH ${JAVA_HOME}/lib;${JAVA_HOME}/jre/lib;
 ENV PATH $JAVA_HOME/bin:$PATH
 COPY ./smart.jar  /
-#  在程序运行时启动tomcat
 CMD ["java", "-jar" ,"smart.jar"]

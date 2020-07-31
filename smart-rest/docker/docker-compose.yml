@@ -8,9 +8,68 @@ services:
       - ./nginx/html/:/etc/nginx/html/
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/logs/:/var/log/nginx
-  app_80:
+    links:
+      - smart-rest
+
+  smart-rest:
     build: ./app/
+    container_name: smart-rest
     ports:
       - "8080:8080"
+    volumes:
+      - ./smart/logs/:/webapp/smart/logs/
+    links:
+      - mysql-master
+      - mysql-slave-read
 
+  mysql-master:
+    image: mysql:5.7.22
+    restart: always
+    hostname: mysql-master
+    container_name: mysql-master
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Shanghai
+    volumes:
+      - ./mysql/master/data:/var/lib/mysql
+      - ./mysql/master/log:/var/log/mysql
+    command:
+      --server_id=100
+      --log-bin=mysql-master-bin
+      --sync_binlog=1
+      --binlog-ignore-db=mysql
+      --binlog_format=mixed
+      --expire_logs_days=7
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    links:
+      - mysql-slave-read
+
+  mysql-slave-read:
+    image: mysql:5.7.22
+    restart: always
+    hostname: mysql-slave-read
+    container_name: mysql-slave-read
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Shanghai
+    volumes:
+      - ./mysql/slave/data:/var/lib/mysql
+      - ./mysql/slave/log:/var/log/mysql
+    command:
+      --server_id=200
+      --read_only=1
+      --binlog-ignore-db=mysql
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
 
