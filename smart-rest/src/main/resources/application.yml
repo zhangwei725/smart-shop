@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 驱动包 8.0以上的配置
+    # =========== durid 连接池配置===========
+    druid:
+      # 初始化连接大小
+      initial-size: 5
+      #最大连接池数量
+      max-active: 20
+      # 最小连接池数量
+      min-idle: 3
+      # 配置获取连接等待超时的时间 单位毫秒
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select
+      test-while-idle: true
+
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+
+      filters: stat,wall,slf4j
+      max-pool-prepared-statement-per-connection-size: 20
+      use-global-data-source-stat: true
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+server:
+  port: 8090
+  servlet:
+    context-path: /api
+#    mybatis plus 配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  type-aliases-package: com.smart.rest.domain.entity
+  #
+  global-config:
+    db-config:
+      id-type: auto
+
+
+
+
+
